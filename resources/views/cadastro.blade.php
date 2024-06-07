@@ -69,7 +69,6 @@
         <p></p>
     </div>
     
-    <script src="{{ mix('js/cep.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const searchForm = document.querySelector("#search-form");
@@ -92,6 +91,28 @@
             if (idField) {
                 deleteButton.style.display = 'inline-block';
             }
+
+            const cepField = document.querySelector("#cep");
+            cepField.addEventListener('blur', function() {
+                const cep = cepField.value.replace(/\D/g, '');
+                if (cep) {
+                    fetch(`/cep/${cep}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (!data.error) {
+                                document.querySelector("#endereco").value = data.logradouro;
+                                document.querySelector("#bairro").value = data.bairro;
+                                document.querySelector("#cidade").value = data.localidade;
+                                document.querySelector("#uf").value = data.uf;
+                            } else {
+                                alert('CEP não encontrado!');
+                            }
+                        })
+                        .catch(() => {
+                            alert('Erro ao buscar o CEP!');
+                        });
+                }
+            });
         });
     </script>
 </body>

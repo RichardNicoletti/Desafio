@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cadastro;
 
+
+use Illuminate\Support\Facades\Http;
+
 class CadastroController extends Controller
 {
     public function create() {
@@ -76,6 +79,15 @@ class CadastroController extends Controller
         } else {
             return redirect()->back()->with('error', 'Cadastro não encontrado.');
         }
-    }
+    }   
 
+    public function buscarCep($cep)
+    {
+        $response = Http::withOptions(['verify' => false])->get("https://viacep.com.br/ws/{$cep}/json/");
+        if ($response->successful()) {
+            return response()->json($response->json());
+        } else {
+            return response()->json(['error' => 'CEP não encontrado'], 404);
+        }
+    }
 }

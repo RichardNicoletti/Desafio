@@ -13,3 +13,6 @@ Route::get('/cadastro/{id}/edit', [CadastroController::class, 'edit'])->name('ca
 Route::post('/cadastro/{id}/update', [CadastroController::class, 'update'])->name('cadastro.update');
 Route::get('/cadastro/{id}/delete', [CadastroController::class, 'delete'])->name('cadastro.delete');
 Route::get('/cadastro/search', [CadastroController::class, 'search'])->name('cadastro.search');
+
+
+Route::get('/cep/{cep}', [CadastroController::class, 'buscarCep']);
